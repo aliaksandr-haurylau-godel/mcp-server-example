@@ -144,7 +144,7 @@ public class McpServer {
                     }
                     LOGGER.info("Shutdown request received. Responding and awaiting exit notification.");
                     this.initialized.set(false);
-                    response = new JsonRpcResponse(request.getId(), null);
+                    response = new JsonRpcResponse(request.getId(), (JsonElement) null);
                     transport.writeMessage(response);
                     return;
 
