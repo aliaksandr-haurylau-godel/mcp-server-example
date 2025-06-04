@@ -102,8 +102,12 @@ public class McpServer {
         }
 
         // Before processing, check if server is initialized for methods that require it.
-        // "initialize" is the exception. "shutdown" and "exit" can also be called anytime.
-        if (!"initialize".equals(request.getMethod()) && !"shutdown".equals(request.getMethod()) && !"exit".equals(request.getMethod()) && !this.initialized.get()) {
+        // "initialize" is the exception. "initialized", "shutdown", and "exit" can also be called anytime relative to the main initialized state.
+        if (!"initialize".equals(request.getMethod()) &&
+            !"initialized".equals(request.getMethod()) && // Allow 'initialized' to pass this check
+            !"shutdown".equals(request.getMethod()) &&
+            !"exit".equals(request.getMethod()) &&
+            !this.initialized.get()) {
             if (request.getId() != null) {
                 LOGGER.warning("Request '" + request.getMethod() + "' received before server is initialized.");
                 JsonRpcResponse notInitializedResponse = new JsonRpcResponse(request.getId(),
